@@ -8,7 +8,7 @@ const pool = new Pool({
   password: process.env.PASSWORD,
 });
 
-async function fetchArtists(cursor) {
+const fetchArtists = async (cursor) => {
   let query = {
     text: "SELECT * FROM artists",
     values: [],
@@ -27,8 +27,25 @@ async function fetchArtists(cursor) {
   } finally {
     client.release();
   }
-}
+};
+
+const deleteArtist = async (artist_id) => {
+  const client = await pool.connect();
+  try {
+    if (isNaN(artist_id)) {
+      throw new Error("Invalid artist_id: " + artist_id);
+    }
+    const result = await client.query(
+      "DELETE FROM artists WHERE artist_id = $1",
+      [artist_id]
+    );
+    return "Row deleted if previously existed.";
+  } finally {
+    client.release();
+  }
+};
 
 module.exports = {
   fetchArtists,
+  deleteArtist,
 };
