@@ -10,5 +10,6 @@ router.delete(
   "/:artist_id",
   centralAsyncHandler(artistsController.deleteArtistByID)
 );
+router.get("/artist", centralAsyncHandler(artistsController.getArtistByName));
 
 module.exports = router;

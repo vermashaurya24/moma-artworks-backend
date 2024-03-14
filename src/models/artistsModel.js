@@ -32,9 +32,6 @@ const fetchArtists = async (cursor) => {
 const deleteArtist = async (artist_id) => {
   const client = await pool.connect();
   try {
-    if (isNaN(artist_id)) {
-      throw new Error("Invalid artist_id: " + artist_id);
-    }
     const result = await client.query(
       "DELETE FROM artists WHERE artist_id = $1",
       [artist_id]
@@ -45,7 +42,34 @@ const deleteArtist = async (artist_id) => {
   }
 };
 
+const fetchArtistsByName = async (DisplayName, cursor) => {
+  const queryValues = [`%${DisplayName}%`];
+  let queryText = `
+     SELECT * FROM artists
+     WHERE DisplayName LIKE $1`;
+
+  if (cursor > 0) {
+    queryText += " AND artist_id > $2";
+    queryValues.push(cursor);
+  }
+
+  queryText += " ORDER BY artist_id ASC LIMIT 100;";
+
+  try {
+    const client = await pool.connect();
+    const result = await client.query({
+      text: queryText,
+      values: queryValues,
+    });
+    return result.rows;
+  } catch (error) {
+    console.error("Error fetching artists:", error);
+    throw new Error("Failed to fetch artists");
+  }
+};
+
 module.exports = {
   fetchArtists,
   deleteArtist,
+  fetchArtistsByName,
 };

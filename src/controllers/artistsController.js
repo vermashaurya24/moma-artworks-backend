@@ -8,12 +8,36 @@ const getPaginatedArtists = async (req, res) => {
 };
 
 const deleteArtistByID = async (req, res) => {
-  let artist_id = parseInt(req.params.artist_id);
+  const artist_id = parseInt(req.params.artist_id);
+  if (isNaN(artist_id)) {
+    throw new Error("Invalid artist_id: " + artist_id);
+  }
   const result = await artistsModel.deleteArtist(artist_id);
   return res.status(204).json({ message: result });
+};
+
+const getArtistByName = async (req, res) => {
+  const { displayName, cursor } = req.query;
+  const validatedCursor = cursor ? Math.floor(cursor / 100) * 100 : 0;
+
+  if (!displayName) {
+    return res
+      .status(400)
+      .json({ message: "displayName parameter is required" });
+  }
+
+  const artists = await artistsModel.fetchArtistsByName(
+    displayName,
+    validatedCursor
+  );
+
+  return artists.length
+    ? res.json({ count: artists.length, rows: artists })
+    : res.status(404).json({ message: "No artists found" });
 };
 
 module.exports = {
   getPaginatedArtists,
   deleteArtistByID,
+  getArtistByName,
 };
