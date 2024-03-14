@@ -37,6 +37,7 @@ async function createArtworksTable(pool) {
     CREATE TABLE IF NOT EXISTS artworks (
       artwork_id SERIAL PRIMARY KEY,
       Title VARCHAR(255) NOT NULL,
+      DisplayName VARCHAR(255),
       artist_id INTEGER,
       URL TEXT,
       ImageURL TEXT,
@@ -68,7 +69,8 @@ async function insertArtistsData(pool, artists) {
 // Function to insert artworks data into the artworks table
 async function insertArtworksData(pool, artworks) {
   for (const artwork of artworks) {
-    const { Title, ConstituentID, Nationality, URL, ImageURL, Date } = artwork;
+    const { Title, Artist, ConstituentID, Nationality, URL, ImageURL, Date } =
+      artwork;
     let year = null;
     // Extract year from the Date field if available
     if (Date) {
@@ -79,9 +81,9 @@ async function insertArtworksData(pool, artworks) {
     }
     // Execute SQL query to insert artwork data into the artworks table
     await pool.query(
-      `INSERT INTO artworks (Title, artist_id, URL, ImageURL, Nationality, Date) 
-       VALUES (LEFT($1, 255), $2, $3, $4, $5, $6)`,
-      [Title, ConstituentID[0], URL, ImageURL, Nationality[0], year]
+      `INSERT INTO artworks (Title, DisplayName, artist_id, URL, ImageURL, Nationality, Date) 
+       VALUES (LEFT($1, 255), $2, $3, $4, $5, $6, $7)`,
+      [Title, Artist[0], ConstituentID[0], URL, ImageURL, Nationality[0], year]
     );
   }
   // Log a message indicating that artworks data was seeded successfully
