@@ -1,7 +1,7 @@
 const http = require("http");
-const app = require("./app");
+const app = require("./src/app");
 const dotenv = require("dotenv");
-dotenv.config({ path: "../.env" });
+dotenv.config();
 
 const PORT = process.env.PORT;
 
