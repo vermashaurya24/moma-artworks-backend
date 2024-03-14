@@ -30,6 +30,20 @@ const fetchArtworks = async (cursor) => {
   }
 };
 
+const deleteArtist = async (artwork_id) => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(
+      "DELETE FROM artworks WHERE artwork_id = $1",
+      [artwork_id]
+    );
+    return result.rowCount;
+  } finally {
+    client.release();
+  }
+};
+
 module.exports = {
   fetchArtworks,
+  deleteArtist,
 };

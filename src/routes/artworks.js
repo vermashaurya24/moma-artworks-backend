@@ -6,5 +6,9 @@ const centralAsyncHandler = require("../middlewares/async-handler");
 
 // "/backend-api/artworks"
 router.get("/", centralAsyncHandler(artworksController.getPaginatedArtworks));
+router.delete(
+  "/:artwork_id",
+  centralAsyncHandler(artworksController.deleteArtworkByID)
+);
 
 module.exports = router;
