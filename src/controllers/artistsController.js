@@ -23,16 +23,16 @@ const deleteArtistByID = async (req, res) => {
 
 const getArtistByName = async (req, res) => {
   const { displayName, cursor } = req.query;
-  const validatedCursor = cursor ? Math.floor(cursor / 100) * 100 : 0;
-
   if (!displayName) {
     return res
       .status(400)
       .json({ message: "displayName parameter is required" });
   }
+  const decodedName = decodeURIComponent(displayName);
+  const validatedCursor = cursor ? Math.floor(cursor / 100) * 100 : 0;
 
   const artists = await artistsModel.fetchArtistsByName(
-    displayName,
+    decodedName,
     validatedCursor
   );
 
