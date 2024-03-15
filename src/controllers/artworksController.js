@@ -21,4 +21,19 @@ const deleteArtworkByID = async (req, res) => {
     .json({ error: "Artwork not found with ID: " + artwork_id });
 };
 
-module.exports = { getPaginatedArtworks, deleteArtworkByID };
+const getArtworksByTitle = async (req, res) => {
+  let { title, cursor } = req.query;
+  const decodedTitle = decodeURIComponent(title);
+  cursor = cursor ? Math.floor(cursor / 100) * 100 : 0;
+  const artworks = await artworksModel.fetchArtworksByTitle(
+    decodedTitle,
+    cursor
+  );
+  res.json({ count: artworks.length, rows: artworks });
+};
+
+module.exports = {
+  getPaginatedArtworks,
+  deleteArtworkByID,
+  getArtworksByTitle,
+};
