@@ -6,15 +6,15 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "../.env" });
 
 // Asynchronous function to drop a table if it exists in the database
-async function dropTableIfExists(pool, tableName) {
+const dropTableIfExists = async (pool, tableName) => {
   await pool.query(`DROP TABLE IF EXISTS ${tableName};`);
   console.log(
     `Table ${tableName} dropped successfully (or it didn't exist before).`
   );
-}
+};
 
 // Asynchronous function to deseed the database by dropping existing tables
-async function deseedDb() {
+const deseedDb = async () => {
   // Creating a connection pool to the PostgreSQL database using environment variables
   const pool = new Pool({
     host: process.env.HOST,
@@ -36,7 +36,7 @@ async function deseedDb() {
     // Ending the pool connection after deseeding is completed
     await pool.end();
   }
-}
+};
 
 // Initiating the deseeding process
 deseedDb();

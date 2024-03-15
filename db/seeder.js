@@ -7,16 +7,16 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "../.env" });
 
 // Function to drop a table if it exists
-async function dropTableIfExists(pool, tableName) {
+const dropTableIfExists = async (pool, tableName) => {
   await pool.query(`DROP TABLE IF EXISTS ${tableName};`);
   // Log a message indicating whether the table was dropped successfully or didn't exist before
   console.log(
     `Table ${tableName} dropped successfully (or it didn't exist before).`
   );
-}
+};
 
 // Function to create the artists table if it doesn't exist
-async function createArtistsTable(pool) {
+const createArtistsTable = async (pool) => {
   await pool.query(`
     CREATE TABLE IF NOT EXISTS artists (
       artist_id SERIAL PRIMARY KEY,
@@ -29,10 +29,10 @@ async function createArtistsTable(pool) {
   `);
   // Log a message indicating that the artists table was created successfully
   console.log("Table artists created successfully");
-}
+};
 
 // Function to create the artworks table if it doesn't exist
-async function createArtworksTable(pool) {
+const createArtworksTable = async (pool) => {
   await pool.query(`
     CREATE TABLE IF NOT EXISTS artworks (
       artwork_id SERIAL PRIMARY KEY,
@@ -49,10 +49,10 @@ async function createArtworksTable(pool) {
   `);
   // Log a message indicating that the artworks table was created successfully
   console.log("Table artworks created successfully");
-}
+};
 
 // Function to insert artists data into the artists table
-async function insertArtistsData(pool, artists) {
+const insertArtistsData = async (pool, artists) => {
   for (const artist of artists) {
     const { ConstituentID, DisplayName, ArtistBio, Nationality, Gender } =
       artist;
@@ -64,10 +64,10 @@ async function insertArtistsData(pool, artists) {
   }
   // Log a message indicating that artists data was seeded successfully
   console.log("Artists data seeded successfully");
-}
+};
 
 // Function to insert artworks data into the artworks table
-async function insertArtworksData(pool, artworks) {
+const insertArtworksData = async (pool, artworks) => {
   for (const artwork of artworks) {
     const { Title, Artist, ConstituentID, Nationality, URL, ImageURL, Date } =
       artwork;
@@ -88,10 +88,10 @@ async function insertArtworksData(pool, artworks) {
   }
   // Log a message indicating that artworks data was seeded successfully
   console.log("Artworks data seeded successfully");
-}
+};
 
 // Function to seed the database with artists and artworks data
-async function seedDb() {
+const seedDb = async () => {
   // Create a new Pool instance with PostgreSQL connection settings from environment variables
   const pool = new Pool({
     host: process.env.HOST,
@@ -129,7 +129,7 @@ async function seedDb() {
     // End the database connection pool
     await pool.end();
   }
-}
+};
 
 // Invoke the seedDb function to seed the database with data
 seedDb();
