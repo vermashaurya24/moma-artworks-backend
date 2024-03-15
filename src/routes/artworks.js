@@ -11,7 +11,11 @@ router.delete(
   centralAsyncHandler(artworksController.deleteArtworkByID)
 );
 router.get(
-  "/artwork",
+  "/byTitle",
   centralAsyncHandler(artworksController.getArtworksByTitle)
+);
+router.get(
+  "/byArtistID",
+  centralAsyncHandler(artworksController.getArtworksByArtistID)
 );
 module.exports = router;
