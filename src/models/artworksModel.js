@@ -89,9 +89,36 @@ const fetchArtworksByArtistID = async (artist_id, cursor) => {
   }
 };
 
+const updateArtwork = async (artworkId, updateFields) => {
+  const { title, url, thumbnail_url, nationality, date } = updateFields;
+
+  const queryText = `
+    UPDATE artworks
+    SET
+      title = $1,
+      url = $2,
+      ImageURL = $3,
+      nationality = $4,
+      date = $5
+    WHERE artwork_id = $6
+    RETURNING *;
+  `;
+
+  const queryValues = [title, url, thumbnail_url, nationality, date, artworkId];
+
+  try {
+    const result = await pool.query(queryText, queryValues);
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error updating artwork:", error);
+    throw error;
+  }
+};
+
 module.exports = {
   fetchArtworks,
   deleteArtist,
   fetchArtworksByTitle,
   fetchArtworksByArtistID,
+  updateArtwork,
 };

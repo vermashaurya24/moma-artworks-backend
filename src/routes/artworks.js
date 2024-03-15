@@ -18,4 +18,9 @@ router.get(
   "/byArtistID",
   centralAsyncHandler(artworksController.getArtworksByArtistID)
 );
+router.put(
+  "/:artwork_id",
+  centralAsyncHandler(artworksController.updateArtwork)
+);
+
 module.exports = router;
