@@ -73,10 +73,53 @@ const updateArtwork = async (req, res) => {
   });
 };
 
+const addArtwork = async (req, res) => {
+  const {
+    title,
+    displayName,
+    url,
+    thumbnail_url,
+    nationality,
+    date,
+    artist_id,
+  } = req.body;
+
+  // Validate input parameters
+  if (
+    !title ||
+    !displayName ||
+    !url ||
+    !thumbnail_url ||
+    !nationality ||
+    !date ||
+    !artist_id
+  ) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+
+  // Add the artwork to the database
+  const newArtwork = await artworksModel.addArtwork({
+    title,
+    displayName,
+    artist_id,
+    url,
+    imageUrl: thumbnail_url,
+    nationality,
+    date,
+  });
+
+  // Send success response
+  res.status(201).json({
+    message: "Artwork added successfully",
+    artwork: newArtwork,
+  });
+};
+
 module.exports = {
   getPaginatedArtworks,
   deleteArtworkByID,
   getArtworksByTitle,
   getArtworksByArtistID,
   updateArtwork,
+  addArtwork,
 };

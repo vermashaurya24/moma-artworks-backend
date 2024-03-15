@@ -22,5 +22,6 @@ router.put(
   "/:artwork_id",
   centralAsyncHandler(artworksController.updateArtwork)
 );
+router.post("/", centralAsyncHandler(artworksController.addArtwork));
 
 module.exports = router;

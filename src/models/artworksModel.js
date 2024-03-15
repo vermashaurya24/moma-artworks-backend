@@ -115,10 +115,40 @@ const updateArtwork = async (artworkId, updateFields) => {
   }
 };
 
+const addArtwork = async (artworkData) => {
+  const { title, displayName, artist_id, url, imageUrl, nationality, date } =
+    artworkData;
+
+  const queryText = `
+    INSERT INTO artworks (Title, DisplayName, artist_id, URL, ImageURL, Nationality, Date)
+    VALUES (LEFT($1, 255), $2, $3, $4, $5, $6, $7)
+    RETURNING *;
+  `;
+
+  const queryValues = [
+    title,
+    displayName,
+    artist_id,
+    url,
+    imageUrl,
+    nationality,
+    date,
+  ];
+
+  try {
+    const result = await pool.query(queryText, queryValues);
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error adding artwork:", error);
+    throw error;
+  }
+};
+
 module.exports = {
   fetchArtworks,
-  deleteArtist,
+  deleteArtworkByID,
   fetchArtworksByTitle,
   fetchArtworksByArtistID,
   updateArtwork,
+  addArtwork,
 };
