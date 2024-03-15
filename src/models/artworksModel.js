@@ -43,7 +43,31 @@ const deleteArtist = async (artwork_id) => {
   }
 };
 
+const fetchArtworksByTitle = async (Title, cursor) => {
+  const queryValues = [`%${Title}%`];
+
+  let queryText = `
+    SELECT * FROM artworks
+    WHERE title ILIKE $1`;
+
+  if (cursor > 0) {
+    queryText += " AND artwork_id > $2";
+    queryValues.push(cursor);
+  }
+
+  queryText += " ORDER BY artwork_id ASC LIMIT 100;";
+
+  try {
+    const result = await pool.query(queryText, queryValues);
+    return result.rows;
+  } catch (error) {
+    console.error("Error fetching artworks by title:", error);
+    throw error;
+  }
+};
+
 module.exports = {
   fetchArtworks,
   deleteArtist,
+  fetchArtworksByTitle,
 };
