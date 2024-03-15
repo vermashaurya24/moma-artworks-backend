@@ -30,7 +30,7 @@ const fetchArtworks = async (cursor) => {
   }
 };
 
-const deleteArtist = async (artwork_id) => {
+const deleteArtworkByID = async (artwork_id) => {
   const client = await pool.connect();
   try {
     const result = await client.query(
@@ -45,5 +45,5 @@ const deleteArtist = async (artwork_id) => {
 
 module.exports = {
   fetchArtworks,
-  deleteArtist,
+  deleteArtworkByID,
 };

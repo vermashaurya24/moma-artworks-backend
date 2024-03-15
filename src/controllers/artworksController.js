@@ -12,7 +12,7 @@ const deleteArtworkByID = async (req, res) => {
   if (isNaN(artwork_id)) {
     throw new Error("Invalid artwork_id: " + artwork_id);
   }
-  const result = await artworksModel.deleteArtist(artwork_id);
+  const result = await artworksModel.deleteArtworkByID(artwork_id);
   if (result === 1) {
     return res.status(204).json({ message: "Artwork deleted successfully." });
   }

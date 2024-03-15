@@ -13,7 +13,12 @@ const deleteArtistByID = async (req, res) => {
     throw new Error("Invalid artist_id: " + artist_id);
   }
   const result = await artistsModel.deleteArtist(artist_id);
-  return res.status(204).json({ message: result });
+  if (result === 1) {
+    return res.status(204).json({ message: "Artist deleted successfully." });
+  }
+  return res
+    .status(404)
+    .json({ error: "Artist not found with ID: " + artist_id });
 };
 
 const getArtistByName = async (req, res) => {
@@ -33,7 +38,7 @@ const getArtistByName = async (req, res) => {
 
   return artists.length
     ? res.json({ count: artists.length, rows: artists })
-    : res.status(404).json({ message: "No artists found" });
+    : res.status(404).json({ message: "No artists found with given name" });
 };
 
 module.exports = {

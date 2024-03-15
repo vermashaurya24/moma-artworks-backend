@@ -36,7 +36,7 @@ const deleteArtist = async (artist_id) => {
       "DELETE FROM artists WHERE artist_id = $1",
       [artist_id]
     );
-    return "Row deleted if previously existed.";
+    return result.rowCount;
   } finally {
     client.release();
   }
@@ -46,7 +46,7 @@ const fetchArtistsByName = async (DisplayName, cursor) => {
   const queryValues = [`%${DisplayName}%`];
   let queryText = `
      SELECT * FROM artists
-     WHERE DisplayName LIKE $1`;
+     WHERE DisplayName ILIKE $1`;
 
   if (cursor > 0) {
     queryText += " AND artist_id > $2";
