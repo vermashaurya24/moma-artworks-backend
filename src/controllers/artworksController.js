@@ -46,9 +46,37 @@ const getArtworksByArtistID = async (req, res) => {
   res.json({ count: artworks.length, rows: artworks });
 };
 
+const updateArtwork = async (req, res) => {
+  const { artwork_id } = req.params;
+  const { title, url, thumbnail_url, nationality, date } = req.body;
+
+  if (!artwork_id) {
+    return res.status(400).json({ error: "Artwork ID is required" });
+  }
+  if (!title && !url && !thumbnail_url && !nationality && !date) {
+    return res
+      .status(400)
+      .json({ error: "At least one field to update is required" });
+  }
+
+  const updatedArtwork = await artworksModel.updateArtwork(artwork_id, {
+    title,
+    url,
+    thumbnail_url,
+    nationality,
+    date,
+  });
+
+  res.json({
+    message: "Artwork updated successfully",
+    artwork: updatedArtwork,
+  });
+};
+
 module.exports = {
   getPaginatedArtworks,
   deleteArtworkByID,
   getArtworksByTitle,
   getArtworksByArtistID,
+  updateArtwork,
 };
