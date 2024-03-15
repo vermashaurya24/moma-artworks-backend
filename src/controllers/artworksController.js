@@ -32,8 +32,23 @@ const getArtworksByTitle = async (req, res) => {
   res.json({ count: artworks.length, rows: artworks });
 };
 
+const getArtworksByArtistID = async (req, res) => {
+  const { artist_id, cursor } = req.query;
+  if (!artist_id || isNaN(artist_id)) {
+    return res.status(400).json({ error: "Invalid artist_id" });
+  }
+  const parsedArtistId = parseInt(artist_id);
+  const parsedCursor = cursor ? Math.floor(parseInt(cursor) / 100) * 100 : 0;
+  const artworks = await artworksModel.fetchArtworksByArtistID(
+    parsedArtistId,
+    parsedCursor
+  );
+  res.json({ count: artworks.length, rows: artworks });
+};
+
 module.exports = {
   getPaginatedArtworks,
   deleteArtworkByID,
   getArtworksByTitle,
+  getArtworksByArtistID,
 };
