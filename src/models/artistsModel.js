@@ -14,12 +14,15 @@ const fetchArtists = async (cursor) => {
     values: [],
   };
 
+  // If cursor is provided, filter artists with artist_id greater than cursor
   if (cursor > 0) {
     query.text += " WHERE artist_id > $1";
     query.values.push(cursor);
   }
 
   query.text += " ORDER BY artist_id ASC LIMIT 100;";
+
+  // Connect to database pool
   const client = await pool.connect();
   try {
     const result = await client.query(query);
@@ -68,8 +71,21 @@ const fetchArtistsByName = async (DisplayName, cursor) => {
   }
 };
 
+const fetchTotalCount = async () => {
+  const queryText = `SELECT COUNT(*) FROM artists;`;
+  try {
+    const client = await pool.connect();
+    const result = await client.query({ text: queryText });
+    return result;
+  } catch (error) {
+    console.error("Error fetching artists count:", error);
+    throw new Error("Failed to fetch artists count");
+  }
+};
+
 module.exports = {
   fetchArtists,
   deleteArtist,
   fetchArtistsByName,
+  fetchTotalCount,
 };

@@ -1,9 +1,20 @@
 const artistsModel = require("../models/artistsModel");
 
 const getPaginatedArtists = async (req, res) => {
+  // Extract cursor from query parameters
   let { cursor } = req.query;
+
+  // If cursor is provided and less than 0, handle it appropriately
+  if (cursor !== undefined && parseInt(cursor) < 0) {
+    return res.status(400).json({ error: "Invalid cursor value" });
+  }
+
+  // If cursor is provided, convert it to nearest multiple of 100, otherwise start from 0
   cursor = cursor ? Math.floor(cursor / 100) * 100 : 0;
+
+  // Fetch artists from model
   const artists = await artistsModel.fetchArtists(cursor);
+  // Send response with count and artists data
   res.json({ count: artists.length, rows: artists });
 };
 
@@ -41,8 +52,14 @@ const getArtistByName = async (req, res) => {
     : res.status(404).json({ message: "No artists found with given name" });
 };
 
+const getTotalCount = async (req, res) => {
+  const totalCount = await artistsModel.fetchTotalCount();
+  res.json({ count: totalCount.rows });
+};
+
 module.exports = {
   getPaginatedArtists,
   deleteArtistByID,
   getArtistByName,
+  getTotalCount,
 };

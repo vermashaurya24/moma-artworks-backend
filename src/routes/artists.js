@@ -11,5 +11,6 @@ router.delete(
   centralAsyncHandler(artistsController.deleteArtistByID)
 );
 router.get("/artist", centralAsyncHandler(artistsController.getArtistByName));
+router.get("/totalCount", centralAsyncHandler(artistsController.getTotalCount));
 
 module.exports = router;
