@@ -83,9 +83,26 @@ const fetchTotalCount = async () => {
   }
 };
 
+const fetchFirst100Artists = async () => {
+  const queryText = `
+    SELECT * FROM artists
+    ORDER BY DisplayName
+    LIMIT 100;
+  `;
+
+  try {
+    const result = await pool.query(queryText);
+    return result.rows;
+  } catch (error) {
+    console.error("Error fetching first 100 artists:", error);
+    throw error;
+  }
+};
+
 module.exports = {
   fetchArtists,
   deleteArtist,
   fetchArtistsByName,
   fetchTotalCount,
+  fetchFirst100Artists,
 };
