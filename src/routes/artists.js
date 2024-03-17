@@ -12,5 +12,9 @@ router.delete(
 );
 router.get("/artist", centralAsyncHandler(artistsController.getArtistByName));
 router.get("/totalCount", centralAsyncHandler(artistsController.getTotalCount));
+router.get(
+  "/dropdown",
+  centralAsyncHandler(artistsController.getFirst100Artists)
+);
 
 module.exports = router;

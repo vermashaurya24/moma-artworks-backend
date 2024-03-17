@@ -57,9 +57,15 @@ const getTotalCount = async (req, res) => {
   res.json({ count: totalCount.rows });
 };
 
+const getFirst100Artists = async (req, res) => {
+  const artists = await artistsModel.fetchFirst100Artists();
+  res.json({ count: artists.length, artists });
+};
+
 module.exports = {
   getPaginatedArtists,
   deleteArtistByID,
   getArtistByName,
   getTotalCount,
+  getFirst100Artists,
 };
