@@ -115,6 +115,11 @@ const addArtwork = async (req, res) => {
   });
 };
 
+const getTotalCount = async (req, res) => {
+  const totalCount = await artworksModel.fetchTotalCount();
+  res.json({ count: totalCount.rows });
+};
+
 module.exports = {
   getPaginatedArtworks,
   deleteArtworkByID,
@@ -122,4 +127,5 @@ module.exports = {
   getArtworksByArtistID,
   updateArtwork,
   addArtwork,
+  getTotalCount,
 };

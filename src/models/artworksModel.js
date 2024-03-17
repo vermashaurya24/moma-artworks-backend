@@ -144,6 +144,18 @@ const addArtwork = async (artworkData) => {
   }
 };
 
+const fetchTotalCount = async () => {
+  const queryText = `SELECT COUNT(*) FROM artworks;`;
+  try {
+    const client = await pool.connect();
+    const result = await client.query({ text: queryText });
+    return result;
+  } catch (error) {
+    console.error("Error fetching artists count:", error);
+    throw new Error("Failed to fetch artists count");
+  }
+};
+
 module.exports = {
   fetchArtworks,
   deleteArtworkByID,
@@ -151,4 +163,5 @@ module.exports = {
   fetchArtworksByArtistID,
   updateArtwork,
   addArtwork,
+  fetchTotalCount,
 };

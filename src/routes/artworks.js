@@ -23,5 +23,9 @@ router.put(
   centralAsyncHandler(artworksController.updateArtwork)
 );
 router.post("/", centralAsyncHandler(artworksController.addArtwork));
+router.get(
+  "/totalCount",
+  centralAsyncHandler(artworksController.getTotalCount)
+);
 
 module.exports = router;
