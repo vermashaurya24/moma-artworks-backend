@@ -48,12 +48,12 @@ const getArtworksByArtistID = async (req, res) => {
 
 const updateArtwork = async (req, res) => {
   const { artwork_id } = req.params;
-  const { title, url, thumbnail_url, nationality, date } = req.body;
+  const { title, url, thumbnailUrl, nationality, date } = req.body;
 
   if (!artwork_id) {
     return res.status(400).json({ error: "Artwork ID is required" });
   }
-  if (!title && !url && !thumbnail_url && !nationality && !date) {
+  if (!title && !url && !thumbnailUrl && !nationality && !date) {
     return res
       .status(400)
       .json({ error: "At least one field to update is required" });
@@ -62,7 +62,7 @@ const updateArtwork = async (req, res) => {
   const updatedArtwork = await artworksModel.updateArtwork(artwork_id, {
     title,
     url,
-    thumbnail_url,
+    thumbnailUrl,
     nationality,
     date,
   });
@@ -78,7 +78,7 @@ const addArtwork = async (req, res) => {
     title,
     displayName,
     url,
-    thumbnail_url,
+    thumbnailUrl,
     nationality,
     date,
     artist_id,
@@ -89,7 +89,7 @@ const addArtwork = async (req, res) => {
     !title ||
     !displayName ||
     !url ||
-    !thumbnail_url ||
+    !thumbnailUrl ||
     !nationality ||
     !date ||
     !artist_id
@@ -103,7 +103,7 @@ const addArtwork = async (req, res) => {
     displayName,
     artist_id,
     url,
-    imageUrl: thumbnail_url,
+    imageUrl: thumbnailUrl,
     nationality,
     date,
   });
