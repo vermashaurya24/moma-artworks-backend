@@ -1,0 +1,148 @@
+openapi: 3.0.0
+info:
+  title: MoMA Artworks Backend
+  description: All API's related to the MoMA are provided below.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000 # Update with your server URL
+paths:
+  /backend-api/artists:
+    get:
+      summary: Retrieve paginated list of artists.
+      description: Retrieves a paginated list of artists from the artists table.
+      parameters:
+        - in: query
+          name: cursor
+          schema:
+            type: integer
+          description: Cursor value for pagination. If provided, retrieves artists starting from the specified cursor position. Must be a multiple of 100.
+      responses:
+        "200":
+          description: Successful operation. Returns a paginated list of artists.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    description: Number of artists returned in the response.
+                  rows:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Artist"
+      security: []
+  /backend-api/artists/{artist_id}:
+    delete:
+      summary: Delete an artist by ID.
+      description: Deletes an artist from the artists table based on the provided artist ID.
+      parameters:
+        - in: path
+          name: artist_id
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: The ID of the artist to delete.
+      responses:
+        "204":
+          description: Artist deleted successfully.
+        "404":
+          description: Artist not found with the specified ID.
+      security: []
+  /backend-api/artists/artist:
+    get:
+      summary: Retrieve artists by name.
+      description: Retrieves artists from the artists table based on the provided display name and cursor for pagination.
+      parameters:
+        - in: query
+          name: displayName
+          required: true
+          schema:
+            type: string
+          description: The display name of the artist to search for.
+        - in: query
+          name: cursor
+          schema:
+            type: integer
+          description: Cursor value for pagination. If provided, retrieves artists starting from the specified cursor position. Must be a multiple of 100.
+      responses:
+        "200":
+          description: Successful operation. Returns artists with similar names to the provided display name.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    description: Number of artists returned in the response.
+                  rows:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Artist"
+        "404":
+          description: No artists found with the provided display name.
+      security: []
+  /backend-api/artists/totalCount:
+    get:
+      summary: Get the total count of artists.
+      description: Retrieves the total count of artists from the artists table in the database.
+      responses:
+        "200":
+          description: Successful operation. Returns the total count of artists.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    description: Total count of artists in the database.
+      security: []
+  /backend-api/artists/dropdown:
+    get:
+      summary: Get the first 100 lexicographically sorted artists.
+      description: Retrieves the first 100 lexicographically sorted artists from the artists table in the database.
+      responses:
+        "200":
+          description: Successful operation. Returns the count and list of first 100 lexicographically sorted artists.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    description: Number of artists returned in the response.
+                  artists:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Artist"
+      security: []
+components:
+  schemas:
+    Artist:
+      type: object
+      properties:
+        artist_id:
+          type: integer
+          format: int64
+          description: The unique identifier for the artist.
+        DisplayName:
+          type: string
+          description: The display name of the artist.
+        ArtistBio:
+          type: string
+          description: The biography of the artist.
+        Nationality:
+          type: string
+          description: The nationality of the artist.
+        Gender:
+          type: string
+          description: The gender of the artist.
+        ConstituentID:
+          type: integer
+          description: The unique identifier of the constituent.
+      required:
+        - DisplayName
