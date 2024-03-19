@@ -4,6 +4,7 @@ const artworksController = require("../controllers/artworksController");
 
 const centralAsyncHandler = require("../middlewares/async-handler");
 
+//centralAsyncHandler function removes the need for redundant try{}catch(){} blocks, making code more modular
 // "/backend-api/artworks"
 router.get("/", centralAsyncHandler(artworksController.getPaginatedArtworks));
 router.delete(
