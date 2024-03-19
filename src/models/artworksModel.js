@@ -90,7 +90,7 @@ const fetchArtworksByArtistID = async (artist_id, cursor) => {
 };
 
 const updateArtwork = async (artworkId, updateFields) => {
-  const { title, url, thumbnail_url, nationality, date } = updateFields;
+  const { title, url, thumbnailUrl, nationality, date } = updateFields;
 
   const queryText = `
     UPDATE artworks
@@ -104,7 +104,7 @@ const updateArtwork = async (artworkId, updateFields) => {
     RETURNING *;
   `;
 
-  const queryValues = [title, url, thumbnail_url, nationality, date, artworkId];
+  const queryValues = [title, url, thumbnailUrl, nationality, date, artworkId];
 
   try {
     const result = await pool.query(queryText, queryValues);
