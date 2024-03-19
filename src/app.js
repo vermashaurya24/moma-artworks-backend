@@ -3,8 +3,7 @@ const cors = require("cors");
 const errorHandler = require("./middlewares/error-handler");
 require("dotenv").config();
 const swaggerUi = require("swagger-ui-express");
-const YAML = require("yamljs");
-const swaggerDocument = YAML.load("./swagger.yaml");
+const swaggerDocument = require("../swagger.json");
 
 const artistsRouter = require("./routes/artists");
 const artworksRouter = require("./routes/artworks");

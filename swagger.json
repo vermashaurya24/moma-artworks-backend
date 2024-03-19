@@ -1,0 +1,628 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "MoMA Artworks Backend",
+    "description": "All API's related to the MoMA are provided below.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000"
+    }
+  ],
+  "paths": {
+    "/backend-api/artists": {
+      "get": {
+        "summary": "Retrieve paginated list of artists.",
+        "description": "Retrieves a paginated list of artists from the artists table.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Cursor value for pagination. If provided, retrieves artists starting from the specified cursor position. Must be a multiple of 100."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns a paginated list of artists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer",
+                      "description": "Number of artists returned in the response."
+                    },
+                    "rows": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Artist"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [],
+        "tags": ["Artists"]
+      }
+    },
+    "/backend-api/artists/{artist_id}": {
+      "delete": {
+        "summary": "Delete an artist by ID.",
+        "description": "Deletes an artist from the artists table based on the provided artist ID.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "artist_id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "The ID of the artist to delete."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Artist deleted successfully."
+          },
+          "404": {
+            "description": "Artist not found with the specified ID."
+          }
+        },
+        "security": [],
+        "tags": ["Artists"]
+      }
+    },
+    "/backend-api/artists/artist": {
+      "get": {
+        "summary": "Retrieve artists by name.",
+        "description": "Retrieves artists from the artists table based on the provided display name and cursor for pagination.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "displayName",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The display name of the artist to search for."
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Cursor value for pagination. If provided, retrieves artists starting from the specified cursor position. Must be a multiple of 100."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns artists with similar names to the provided display name.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer",
+                      "description": "Number of artists returned in the response."
+                    },
+                    "rows": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Artist"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No artists found with the provided display name."
+          }
+        },
+        "security": [],
+        "tags": ["Artists"]
+      }
+    },
+    "/backend-api/artists/totalCount": {
+      "get": {
+        "summary": "Get the total count of artists.",
+        "description": "Retrieves the total count of artists from the artists table in the database.",
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns the total count of artists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer",
+                      "description": "Total count of artists in the database."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [],
+        "tags": ["Artists"]
+      }
+    },
+    "/backend-api/artists/dropdown": {
+      "get": {
+        "summary": "Get the first 100 lexicographically sorted artists.",
+        "description": "Retrieves the first 100 lexicographically sorted artists from the artists table in the database.",
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns the count and list of first 100 lexicographically sorted artists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer",
+                      "description": "Number of artists returned in the response."
+                    },
+                    "artists": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Artist"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [],
+        "tags": ["Artists"]
+      }
+    },
+    "/backend-api/artworks": {
+      "get": {
+        "summary": "Retrieve paginated list of artworks.",
+        "description": "Retrieves a paginated list of artworks from the artworks table.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Cursor value for pagination. If provided, retrieves artworks starting from the specified cursor position. Must be a multiple of 100."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns a paginated list of artworks.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer",
+                      "description": "Number of artworks returned in the response."
+                    },
+                    "rows": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Artwork"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [],
+        "tags": ["Artworks"]
+      }
+    },
+    "/backend-api/artworks/delete/{artwork_id}": {
+      "delete": {
+        "summary": "Delete an artwork by ID.",
+        "operationId": "getArtworkById",
+        "description": "Deletes an artwork from the artworks table based on the provided artwork ID.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "artwork_id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "The ID of the artwork to delete."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Artwork deleted successfully."
+          },
+          "404": {
+            "description": "Artwork not found with the specified ID."
+          }
+        },
+        "security": [],
+        "tags": ["Artworks"]
+      }
+    },
+    "/backend-api/artworks/byTitle": {
+      "get": {
+        "summary": "Retrieve artworks by title.",
+        "description": "Retrieves artworks from the artworks table based on the provided title and cursor for pagination.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "title",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The title of the artwork to search for."
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Cursor value for pagination. If provided, retrieves artworks starting from the specified cursor position. Must be a multiple of 100."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns artworks with matching titles to the provided title.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer",
+                      "description": "Number of artworks returned in the response."
+                    },
+                    "rows": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Artwork"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No artworks found with the provided title."
+          }
+        },
+        "security": [],
+        "tags": ["Artworks"]
+      }
+    },
+    "/backend-api/artworks/byArtistID": {
+      "get": {
+        "summary": "Retrieve artworks by artist ID.",
+        "description": "Retrieves artworks from the artworks table based on the provided artist ID and cursor for pagination.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "artist_id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The ID of the artist whose artworks to retrieve."
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Cursor value for pagination. If provided, retrieves artworks starting from the specified cursor position. Must be a multiple of 100."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns artworks created by the artist with the specified ID.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer",
+                      "description": "Number of artworks returned in the response."
+                    },
+                    "rows": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Artwork"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid artist ID provided."
+          },
+          "404": {
+            "description": "No artworks found for the provided artist ID."
+          }
+        },
+        "security": [],
+        "tags": ["Artworks"]
+      }
+    },
+    "/backend-api/artworks/totalCount": {
+      "get": {
+        "summary": "Get the total count of artworks.",
+        "description": "Retrieves the total count of artworks from the artworks table in the database.",
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns the total count of artworks.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer",
+                      "description": "Total count of artworks in the database."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [],
+        "tags": ["Artworks"]
+      }
+    },
+    "/backend-api/artworks/{artwork_id}": {
+      "put": {
+        "summary": "Update an artwork by ID.",
+        "operationId": "updateArtworkById",
+        "description": "Updates an artwork in the artworks table based on the provided artwork ID.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "artwork_id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "The ID of the artwork to update."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  },
+                  "thumbnailUrl": {
+                    "type": "string"
+                  },
+                  "nationality": {
+                    "type": "string"
+                  },
+                  "date": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Artwork updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Indicates successful artwork update."
+                    },
+                    "artwork": {
+                      "$ref": "#/components/schemas/Artwork"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body or artwork ID provided."
+          },
+          "404": {
+            "description": "Artwork not found with the specified ID."
+          }
+        },
+        "security": [],
+        "tags": ["Artworks"]
+      }
+    },
+    "/backend-api/artworks/create": {
+      "post": {
+        "summary": "Add a new artwork.",
+        "description": "Adds a new artwork to the artworks table.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "The title of the artwork."
+                  },
+                  "displayName": {
+                    "type": "string",
+                    "description": "The display name of the artwork."
+                  },
+                  "url": {
+                    "type": "string",
+                    "description": "The URL of the artwork."
+                  },
+                  "thumbnailUrl": {
+                    "type": "string",
+                    "description": "The thumbnail URL of the artwork."
+                  },
+                  "nationality": {
+                    "type": "string",
+                    "description": "The nationality associated with the artwork."
+                  },
+                  "date": {
+                    "type": "string",
+                    "description": "The date associated with the artwork."
+                  },
+                  "artist_id": {
+                    "type": "integer",
+                    "description": "The ID of the artist associated with the artwork."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Artwork added successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Indicates successful addition of the artwork."
+                    },
+                    "artwork": {
+                      "$ref": "#/components/schemas/Artwork"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body or missing required fields."
+          }
+        },
+        "security": [],
+        "tags": ["Artworks"]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Artist": {
+        "type": "object",
+        "properties": {
+          "artist_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier for the artist."
+          },
+          "DisplayName": {
+            "type": "string",
+            "description": "The display name of the artist."
+          },
+          "ArtistBio": {
+            "type": "string",
+            "description": "The biography of the artist."
+          },
+          "Nationality": {
+            "type": "string",
+            "description": "The nationality of the artist."
+          },
+          "Gender": {
+            "type": "string",
+            "description": "The gender of the artist."
+          },
+          "ConstituentID": {
+            "type": "integer",
+            "description": "The unique identifier of the constituent."
+          }
+        },
+        "required": ["DisplayName"]
+      },
+      "Artwork": {
+        "type": "object",
+        "properties": {
+          "artwork_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier for the artwork."
+          },
+          "Title": {
+            "type": "string",
+            "description": "The title of the artwork."
+          },
+          "DisplayName": {
+            "type": "string",
+            "description": "The display name of the artwork."
+          },
+          "artist_id": {
+            "type": "integer",
+            "description": "The ID of the artist associated with the artwork."
+          },
+          "URL": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URL of the artwork."
+          },
+          "ImageURL": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URL of the image associated with the artwork."
+          },
+          "Nationality": {
+            "type": "string",
+            "description": "The nationality associated with the artwork."
+          },
+          "Date": {
+            "type": "string",
+            "description": "The date of the artwork."
+          }
+        },
+        "required": ["Title"]
+      }
+    }
+  }
+}

@@ -1,9 +1,16 @@
 const artworksModel = require("../models/artworksModel");
 
 const getPaginatedArtworks = async (req, res) => {
+  // Extract cursor from query parameters
   let { cursor } = req.query;
+
+  // If cursor is provided, convert it to the nearest multiple of 100, otherwise start from 0
   cursor = cursor ? Math.floor(cursor / 100) * 100 : 0;
+
+  // Fetch artworks from model
   const artworks = await artworksModel.fetchArtworks(cursor);
+
+  // Send response with count and artworks data
   res.json({ count: artworks.length, rows: artworks });
 };
 

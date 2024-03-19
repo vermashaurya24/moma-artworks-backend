@@ -7,7 +7,7 @@ const centralAsyncHandler = require("../middlewares/async-handler");
 // "/backend-api/artworks"
 router.get("/", centralAsyncHandler(artworksController.getPaginatedArtworks));
 router.delete(
-  "/:artwork_id",
+  "/delete/:artwork_id",
   centralAsyncHandler(artworksController.deleteArtworkByID)
 );
 router.get(
@@ -22,7 +22,7 @@ router.put(
   "/:artwork_id",
   centralAsyncHandler(artworksController.updateArtwork)
 );
-router.post("/", centralAsyncHandler(artworksController.addArtwork));
+router.post("/create", centralAsyncHandler(artworksController.addArtwork));
 router.get(
   "/totalCount",
   centralAsyncHandler(artworksController.getTotalCount)
