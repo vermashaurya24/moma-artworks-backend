@@ -62,13 +62,7 @@ const getArtistByName = async (req, res) => {
   );
 
   // Check if artists were found
-  if (artists.length) {
-    return res.json({ count: artists.length, rows: artists });
-  } else {
-    return res
-      .status(404)
-      .json({ message: "No artists found with given name" });
-  }
+  return res.status(200).json({ count: artists.length, rows: artists });
 };
 
 const getTotalCount = async (req, res) => {
